@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>AirFlow: Seamless Travel Experience</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #2c3e50;
+        }
+
+        #preferences-form {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            margin: auto;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to AirFlow</h1>
+        <p>Your seamless travel experience starts here.</p>
+    </header>
+    
+    <main>
+        <div id="preferences-form">
+            <h2>Your Preferences</h2>
+            <form id="user-preferences" method="POST" action="/register">
+                <div class="form-group">
+                    <label for="user_id">User ID:</label>
+                    <input type="text" id="user_id" name="user_id" required>
+                </div>
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="flight_id">Flight ID:</label>
+                    <input type="text" id="flight_id" name="flight_id" required>
+                </div>
+                <div class="form-group">
+                    <label for="seat">Seat Preference:</label>
+                    <select id="seat" name="seat" required>
+                        <option value="Aisle">Aisle</option>
+                        <option value="Window">Window</option>
+                        <option value="Middle">Middle</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="meal">Meal Preference:</label>
+                    <select id="meal" name="meal" required>
+                        <option value="Vegetarian">Vegetarian</option>
+                        <option value="Non-Vegetarian">Non-Vegetarian</option>
+                        <option value="Vegan">Vegan</option>
+                        <option value="Gluten-Free">Gluten-Free</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="baggage">Baggage Allowance:</label>
+                    <select id="baggage" name="baggage" required>
+                        <option value="1 Carry-on">1 Carry-on</option>
+                        <option value="2 Carry-ons">2 Carry-ons</option>
+                        <option value="Checked Baggage">Checked Baggage</option>
+                    </select>
+                </div>
+                <button type="submit">Register Preferences</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('user_id').addEventListener('blur', function() {
+    let userId = this.value;
+
+    if (userId.trim() !== "") {
+        // Fetch user info if user_id exists
+        fetch(`/get_user_info/${userId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);  // Handle error (e.g., user not found)
+                } else {
+                    // Auto-fill the form with user details if data is available
+                    document.getElementById('name').value = data.name || '';
+                    document.getElementById('seat').value = data.seat || '';
+                    document.getElementById('meal').value = data.meal || '';
+                    document.getElementById('baggage').value = data.baggage || '';
+                    document.getElementById('flight_id').value = data.flight_id || '';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching user info:', error);
+                alert('Failed to retrieve user information.');
+            });
+    }
+});
+
+        
+
+        document.getElementById('flight_id').addEventListener('change', function() {
+            let flightId = this.value;
+            
+            // Check if flight_id is valid
+            fetch(`/validate_flight/${flightId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);  // Alert if flight not found
+                    } else {
+                        alert(data.status);  // Alert if flight is available
+                    }
+                });
+        });
+    </script>
+
+    <footer>
+        <p>&copy; 2024 AirFlow. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

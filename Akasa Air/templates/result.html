@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>AirFlow: Registration Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #4CAF50;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: #555;
+        }
+
+        .result-message {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 10px 0;
+        }
+
+        strong {
+            color: #4CAF50;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.8em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Registration Result</h1>
+    </header>
+
+    <main class="container">
+        <h2>{{ message }}</h2>
+        <div id="preferences">
+            <h3>Your Preferences:</h3>
+            <ul>
+                <li><strong>User ID:</strong> {{ preferences.user_id }}</li>
+                <li><strong>Name:</strong> {{ preferences.name }}</li>
+                <li><strong>Flight ID:</strong> {{ preferences.flight_id }}</li>
+                <li><strong>Seat:</strong> {{ preferences.seat }}</li>
+                <li><strong>Meal:</strong> {{ preferences.meal }}</li>
+                <li><strong>Baggage:</strong> {{ preferences.baggage }}</li>
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 AirFlow. All rights reserved.</p>
+    </footer>
+</body>
+</html>
